@@ -21,8 +21,25 @@ require("blink.cmp").setup({
 		preset = "none",
 		["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
 		["<CR>"] = { "accept", "fallback" },
-		["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
-		["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
+		["<C-p>"] = { "select_prev", "snippet_backward", "fallback" },
+		["<C-n>"] = { "select_next", "snippet_forward", "fallback" },
+		["<Tab>"] = {
+			function(cmp)
+				-- 1. 優先處理 Copilot Suggestion (Ghost Text)
+				local ok, copilot = pcall(require, "copilot.suggestion")
+				if ok and copilot.is_visible() then
+					-- 建立 Undo 斷點 (讓一次 undo 就能撤銷整個 AI 建議)
+					vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-G>u", true, 0, true), "n", true)
+					copilot.accept()
+					return true -- 攔截按鍵，不執行後續動作
+				end
+				-- 2. 如果選單開著，就選下一個
+				if cmp.is_visible() then
+					return cmp.select_next()
+				end
+			end,
+			"fallback", -- 3. 都不是的話，就執行原生的 Tab (縮排)
+		},
 		["<C-b>"] = { "scroll_documentation_up", "fallback" },
 		["<C-f>"] = { "scroll_documentation_down", "fallback" },
 		["<C-e>"] = { "snippet_forward", "select_next", "fallback" },

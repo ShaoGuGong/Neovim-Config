@@ -18,12 +18,13 @@ vim.opt.encoding = "utf8"
 
 vim.opt.list = true
 vim.opt.lcs = {
-    tab = "󰌒 ",
-    space = "·",
-    -- trail = " ",
-    nbsp = "+",
+	tab = "󰌒 ",
+	space = "·",
+	-- trail = " ",
+	nbsp = "+",
 }
 
 vim.opt.termguicolors = true
 vim.opt.clipboard = "unnamedplus"
 vim.cmd([[au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]])
+vim.lsp.inlay_hint.enable(true)

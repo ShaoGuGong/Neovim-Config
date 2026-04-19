@@ -18,7 +18,6 @@ local plugins = {
 	-- conform.lua 格式化工具formatter
 	"https://github.com/stevearc/conform.nvim",
 	-- treesitter.lua 需要安装tree-sitter-cli工具包
-	"https://github.com/nvim-treesitter/nvim-treesitter",
 	"https://github.com/windwp/nvim-autopairs",
 	-- set gitsigns
 	"https://github.com/lewis6991/gitsigns.nvim",
@@ -28,6 +27,7 @@ local plugins = {
 	"https://github.com/MunifTanjim/nui.nvim",
 
 	"https://github.com/folke/flash.nvim",
+	"https://github.com/nvim-treesitter/nvim-treesitter",
 
 	"https://github.com/HiPhish/rainbow-delimiters.nvim",
 
@@ -36,11 +36,18 @@ local plugins = {
 	"https://github.com/rachartier/tiny-inline-diagnostic.nvim",
 
 	"https://github.com/andweeb/presence.nvim",
+
+	"https://github.com/karb94/neoscroll.nvim",
+	"https://github.com/nvim-treesitter/nvim-treesitter-context",
+
+	{ src = "https://github.com/mrcjkb/rustaceanvim", version = vim.version.range("^9") },
+
+	"https://github.com/zbirenbaum/copilot.lua",
 }
 
 vim.pack.add(plugins)
 
-require("plugins.blink")
+require("plugins.copilot")
 require("plugins.lualine")
 require("plugins.oil")
 require("plugins.lspconfig")
@@ -52,3 +59,5 @@ require("plugins.outline")
 require("plugins.flash")
 require("plugins.inline-diagnostic")
 require("plugins.presence")
+require("plugins.neoscroll")
+require("plugins.blink")
