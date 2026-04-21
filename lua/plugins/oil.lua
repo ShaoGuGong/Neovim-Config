@@ -1,10 +1,19 @@
 require("oil").setup({
-    columns = {
-        "permissions",
-        "size",
-        "mtime",
-        "icon",
-    },
+	columns = {
+		"permissions",
+		"size",
+		"mtime",
+		"icon",
+	},
 })
 
-vim.keymap.set("n", "<leader>.", "<CMD>Oil<CR>", { desc = "Open Oil" })
+local wk = require("which-key")
+wk.add({
+	{
+		"<leader>.",
+		desc = "Open Oil",
+		icon = "",
+		noremap = true,
+		silent = true,
+	},
+})

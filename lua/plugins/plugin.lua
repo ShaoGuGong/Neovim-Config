@@ -8,9 +8,6 @@ local plugins = {
 	-- set whick-key
 	"https://github.com/folke/which-key.nvim",
 
-	-- blinkcmp.lua 自动补全、代码片段
-	"https://github.com/saghen/blink.cmp",
-	"https://github.com/rafamadriz/friendly-snippets",
 	-- lspconfig.lua
 	"https://github.com/neovim/nvim-lspconfig",
 	"https://github.com/mason-org/mason.nvim",
@@ -43,11 +40,24 @@ local plugins = {
 	{ src = "https://github.com/mrcjkb/rustaceanvim", version = vim.version.range("^9") },
 
 	"https://github.com/zbirenbaum/copilot.lua",
+	"https://github.com/fang2hou/blink-copilot",
+	-- blinkcmp.lua 自动补全、代码片段
+	"https://github.com/saghen/blink.cmp",
+	"https://github.com/rafamadriz/friendly-snippets",
+
+	"https://github.com/nvim-lua/plenary.nvim",
+	"https://github.com/nvim-telescope/telescope.nvim",
+
+	"https://github.com/linux-cultist/venv-selector.nvim",
+
+	"https://github.com/nvim-mini/mini.surround",
 }
 
 vim.pack.add(plugins)
 
+require("plugins.which-key")
 require("plugins.copilot")
+require("plugins.blink")
 require("plugins.lualine")
 require("plugins.oil")
 require("plugins.lspconfig")
@@ -60,4 +70,6 @@ require("plugins.flash")
 require("plugins.inline-diagnostic")
 require("plugins.presence")
 require("plugins.neoscroll")
-require("plugins.blink")
+require("plugins.telescope")
+require("plugins.venv-selector")
+require("plugins.surround")

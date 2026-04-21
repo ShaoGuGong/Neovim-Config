@@ -58,8 +58,14 @@ require("blink.cmp").setup({
 		nerd_font_variant = "mono",
 	},
 	sources = {
-		default = { "buffer", "lsp", "path", "snippets" },
+		default = { "copilot", "lsp", "path", "snippets", "buffer" },
 		providers = {
+			copilot = {
+				name = "copilot",
+				module = "blink-copilot",
+				score_offset = 100,
+				async = true,
+			},
 			buffer = { score_offset = 5 },
 			path = { score_offset = 3 },
 			lsp = { score_offset = 2 },
