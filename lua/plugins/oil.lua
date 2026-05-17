@@ -11,6 +11,7 @@ local wk = require("which-key")
 wk.add({
 	{
 		"<leader>.",
+		"<CMD>Oil<CR>",
 		desc = "Open Oil",
 		icon = "",
 		noremap = true,

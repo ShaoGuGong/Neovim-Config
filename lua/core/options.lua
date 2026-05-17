@@ -28,3 +28,5 @@ vim.opt.termguicolors = true
 vim.opt.clipboard = "unnamedplus"
 vim.cmd([[au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]])
 vim.lsp.inlay_hint.enable(true)
+vim.g.pyindent_open_paren = "shiftwidth()"
+vim.g.pyindent_nested_paren = "shiftwidth()"

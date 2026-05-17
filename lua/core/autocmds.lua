@@ -27,9 +27,19 @@ local compile_group = vim.api.nvim_create_augroup("CompileSetting", { clear = tr
 vim.api.nvim_create_autocmd("InsertLeave", {
 	group = input_method_group,
 	pattern = "*",
-	-- command = "silent! !fcitx5-remote -c",
 	callback = function()
-		vim.uv.spawn("im-select", { args = { "com.apple.keylayout.ABC" } })
+		-- 1. 使用同步方式獲取當前輸入法 (因為代碼邏輯需要等待這個結果)
+		-- 注意：這裡改用 ABC 或 US，取決於你 Mac 上顯示的名稱
+		local target_im = "com.apple.keylayout.ABC"
+
+		-- 執行一次獲取結果，清理空白字元
+		local current_im = vim.fn.system("im-select"):gsub("%s+", "")
+
+		-- 2. 判斷是否需要切換
+		if current_im ~= target_im then
+			-- 使用非同步 spawn 切換，這樣不會卡住編輯器 UI
+			vim.uv.spawn("im-select", { args = { target_im } })
+		end
 	end,
 })
 
@@ -40,7 +50,7 @@ local c_dev_events = {
 
 vim.api.nvim_create_autocmd(c_dev_events, {
 	group = c_dev_group,
-	pattern = { "*.c", "*.h", "*.cpp", "*.hpp" },
+	pattern = { "*.c", "*.h", "*.cpp", "*.hpp", "*.tex", "*.typ" },
 	callback = function()
 		vim.opt_local.tabstop = 2
 		vim.opt_local.shiftwidth = 2
@@ -61,38 +71,3 @@ vim.api.nvim_create_autocmd(lua_dev_events, {
 		vim.opt_local.expandtab = false
 	end,
 })
-
-local function python_run()
-	local found = vim.fs.find("main.py", { upward = true, stop = vim.uv.os_homedir() })[1]
-	if found then
-		vim.opt_local.makeprg = "uv run " .. vim.fn.shellescape(found)
-	else
-		vim.opt_local.makeprg = "uv run %"
-	end
-end
-
-local function rust_run()
-	-- 優先尋找 Cargo.toml，因為這是 Rust 專案的標誌
-	local cargo_toml = vim.fs.find("Cargo.toml", { upward = true, stop = vim.uv.os_homedir() })[1]
-	if cargo_toml then
-		-- 如果在 Cargo 專案中，不論在哪個子目錄，直接執行 cargo run
-		vim.opt_local.makeprg = "cargo run"
-	else
-		-- 如果只是單獨的 .rs 檔案，使用 rustc
-		-- %:r 會取得不含副檔名的檔名
-		vim.opt_local.makeprg = "rustc % -o %:r && ./%:r && rm %:r"
-	end
-end
-
-local makepkg_group = {
-	["*.py"] = python_run,
-	["*.rs"] = rust_run,
-}
-
-for key, value in pairs(makepkg_group) do
-	vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-		group = compile_group,
-		pattern = key,
-		callback = value,
-	})
-end
